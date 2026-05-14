@@ -20,7 +20,12 @@ export default function OwnerKosPage() {
   useEffect(() => {
     async function fetchMyKos() {
       try {
-        const response = await api.get("/kos/my-kos");
+        const role = localStorage.getItem("role");
+
+        const response =
+          role === "ADMIN"
+            ? await api.get("/kos")
+            : await api.get("/kos/my-kos");
 
         setKosList(response.data);
       } catch (err: any) {
@@ -60,9 +65,18 @@ export default function OwnerKosPage() {
   return (
     <main className="min-h-screen bg-gray-100 p-6">
       <div className="mx-auto max-w-5xl">
-        <h1 className="text-3xl font-bold text-gray-800">My Kos</h1>
+        <div className="mb-6 flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-800">My Kos</h1>
+          </div>
 
-        <p className="mt-2 text-gray-600">Manage your boarding house here.</p>
+          <Link
+            href="/owner/kos/create"
+            className="rounded-lg bg-blue-600 px-5 py-3 font-medium text-white hover:bg-blue-700"
+          >
+            + Add Kos
+          </Link>
+        </div>
 
         <div className="mt-6 space-y-4">
           {kosList.map((kos) => (

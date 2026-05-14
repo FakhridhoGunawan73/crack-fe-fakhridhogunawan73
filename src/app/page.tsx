@@ -22,7 +22,6 @@ export default function Home() {
       try {
         const response = await api.get("/kos");
         setKosList(response.data);
-        console.log("Kos data:", response.data);
       } catch (err: any) {
         setError(
           err.response?.data?.message ||

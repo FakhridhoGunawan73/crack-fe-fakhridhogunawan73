@@ -44,34 +44,51 @@ export default function Navbar() {
 
           {isLogin ? (
             <>
-              {(role === "OWNER" || role === "ADMIN") && (
-                <Link
-                  href="/owner/bookings"
-                  className={
-                    pathname === "/owner/bookings"
-                      ? "font-bold text-yellow-300"
-                      : ""
-                  }
-                >
-                  Owner Bookings
-                </Link>
+              {role === "OWNER" || role === "ADMIN" ? (
+                <>
+                  <Link
+                    href="/owner/dashboard"
+                    className={
+                      pathname === "/owner/dashboard"
+                        ? "font-bold text-yellow-300"
+                        : ""
+                    }
+                  >
+                    Dashboard
+                  </Link>
+
+                  <Link
+                    href="/profile"
+                    className={
+                      pathname === "/profile" ? "font-bold text-yellow-300" : ""
+                    }
+                  >
+                    Profile
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/my-bookings"
+                    className={
+                      pathname === "/my-bookings"
+                        ? "font-bold text-yellow-300"
+                        : ""
+                    }
+                  >
+                    My Bookings
+                  </Link>
+
+                  <Link
+                    href="/profile"
+                    className={
+                      pathname === "/profile" ? "font-bold text-yellow-300" : ""
+                    }
+                  >
+                    Profile
+                  </Link>
+                </>
               )}
-              <Link
-                href="/my-bookings"
-                className={
-                  pathname === "/my-bookings" ? "font-bold text-yellow-300" : ""
-                }
-              >
-                My Bookings
-              </Link>
-              <Link
-                href="/profile"
-                className={
-                  pathname === "/profile" ? "font-bold text-yellow-300" : ""
-                }
-              >
-                Profile
-              </Link>
 
               <button onClick={handleLogout}>Logout</button>
             </>

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import api from "@/lib/api";
 import Link from "next/link";
+import Image from "next/image";
 
 type Room = {
   id: number;
@@ -12,6 +13,7 @@ type Room = {
   price: number;
   capacity: number;
   facilities: string;
+  imageUrl: string;
   isAvailable: boolean;
 };
 
@@ -86,48 +88,67 @@ export default function OwnerRoomsPage() {
             <p className="text-gray-600">No rooms available yet.</p>
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {rooms.map((room) => (
-              <div key={room.id} className="rounded-xl bg-white p-5 shadow">
-                <h2 className="text-xl font-bold text-gray-800">
-                  Room {room.roomNumber}
-                </h2>
+              <div
+                key={room.id}
+                className="flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition hover:shadow-md"
+              >
+                <div className="bg-gray-200">
+                  <Image
+                    src={room.imageUrl}
+                    alt={`Room ${room.roomNumber}`}
+                    width={800}
+                    height={400}
+                    className="h-48 w-full object-cover"
+                  />
+                </div>
 
-                <p className="mt-2 text-gray-600">Type: {room.type}</p>
+                <div className="flex flex-1 flex-col p-5">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <h2 className="text-xl font-bold text-gray-800">
+                        Room {room.roomNumber}
+                      </h2>
 
-                <p className="mt-1 text-gray-600">
-                  Capacity: {room.capacity} people
-                </p>
+                      <p className="mt-1 text-sm text-gray-500">{room.type}</p>
+                    </div>
 
-                <p className="mt-1 text-gray-600">Price: Rp {room.price}</p>
+                    <span
+                      className={`rounded-full px-3 py-1 text-sm font-medium ${
+                        room.isAvailable
+                          ? "bg-green-100 text-green-700"
+                          : "bg-red-100 text-red-700"
+                      }`}
+                    >
+                      {room.isAvailable ? "Available" : "Not Available"}
+                    </span>
+                  </div>
 
-                <p className="mt-1 text-gray-600">
-                  Facilities: {room.facilities}
-                </p>
+                  <p className="mt-4 text-2xl font-bold text-blue-600">
+                    Rp {room.price.toLocaleString("id-ID")}
+                  </p>
 
-                <p
-                  className={`mt-2 inline-block rounded-full px-3 py-1 text-sm font-medium ${
-                    room.isAvailable
-                      ? "bg-green-100 text-green-700"
-                      : "bg-red-100 text-red-700"
-                  }`}
-                >
-                  {room.isAvailable ? "Available" : "Not Available"}
-                </p>
-                <div className="mt-4 flex gap-2">
-                  <Link
-                    href={`/owner/kos/${kosId}/rooms/${room.id}/edit`}
-                    className="rounded-lg bg-yellow-500 px-4 py-2 text-sm font-medium text-white hover:bg-yellow-600"
-                  >
-                    Edit
-                  </Link>
+                  <div className="flex flex-1 flex-col mt-2">
+                    <p>Capacity: {room.capacity} person</p>
+                    <p>Facilities: {room.facilities}</p>
+                  </div>
 
-                  <button
-                    onClick={() => handleDelete(room.id)}
-                    className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
-                  >
-                    Delete
-                  </button>
+                  <div className="mt-5 flex gap-2 border-t pt-4">
+                    <Link
+                      href={`/owner/kos/${kosId}/rooms/${room.id}/edit`}
+                      className="rounded-lg bg-yellow-500 px-4 py-2 text-sm font-medium text-white hover:bg-yellow-600"
+                    >
+                      Edit
+                    </Link>
+
+                    <button
+                      onClick={() => handleDelete(room.id)}
+                      className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}

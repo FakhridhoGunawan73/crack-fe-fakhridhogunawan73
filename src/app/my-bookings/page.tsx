@@ -41,6 +41,21 @@ function getStatusStyle(status: string) {
   }
 }
 
+function getStatusLabel(status: string) {
+  switch (status) {
+    case "PENDING":
+      return "Pending";
+    case "APPROVED":
+      return "Approved";
+    case "REJECTED":
+      return "Rejected";
+    case "CANCELLED":
+      return "Cancelled";
+    default:
+      return status;
+  }
+}
+
 export default function MyBookings() {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
@@ -106,9 +121,17 @@ export default function MyBookings() {
             <h2 className="text-xl font-bold text-gray-800">
               Belum Ada Booking
             </h2>
+
             <p className="mt-2 text-gray-500">
               Kamu belum melakukan booking kamar.
             </p>
+
+            <a
+              href="/"
+              className="mt-6 inline-block rounded-lg bg-blue-600 px-5 py-3 font-medium text-white transition hover:bg-blue-700"
+            >
+              Cari Kos Sekarang
+            </a>
           </div>
         )}
 
@@ -135,7 +158,7 @@ export default function MyBookings() {
                       booking.status,
                     )}`}
                   >
-                    {booking.status}
+                    {getStatusLabel(booking.status)}
                   </span>
                 </div>
 

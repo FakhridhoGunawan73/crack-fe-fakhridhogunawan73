@@ -75,7 +75,7 @@ export default async function KosDetailPage({ params }: KosDetailPageProps) {
             {kos.rooms.map((room) => (
               <div
                 key={room.id}
-                className="overflow-hidden rounded-2xl bg-white shadow-sm transition hover:shadow-md"
+                className="flex h-full flex-col overflow-hidden rounded-2xl bg-white shadow-sm transition hover:shadow-md"
               >
                 <div className="relative h-48 w-full">
                   {room.imageUrl ? (
@@ -93,7 +93,7 @@ export default async function KosDetailPage({ params }: KosDetailPageProps) {
                   )}
                 </div>
 
-                <div className="p-5">
+                <div className="flex flex-1 flex-col p-5">
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <h3 className="text-xl font-bold text-gray-900">
@@ -120,7 +120,7 @@ export default async function KosDetailPage({ params }: KosDetailPageProps) {
                     {formatRupiah(room.price)}
                   </p>
 
-                  <p className="mt-3 min-h-10 text-sm text-gray-600">
+                  <p className="mt-3 flex-1 text-sm text-gray-600">
                     {room.facilities || "Fasilitas belum diisi"}
                   </p>
 
