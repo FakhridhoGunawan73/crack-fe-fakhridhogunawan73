@@ -1,12 +1,10 @@
 "use client";
 
-export const dynamic = "force-dynamic";
-
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import api from "@/lib/api";
 
-export default function CreateBookingPage() {
+function CreateBookingContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const roomId = searchParams.get("roomId");
@@ -15,7 +13,7 @@ export default function CreateBookingPage() {
   const [endDate, setEndDate] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [succsess, setSuccess] = useState("");
+  const [success, setSuccess] = useState("");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -82,16 +80,25 @@ export default function CreateBookingPage() {
 
           {error && <p className="text-sm text-red-500">{error}</p>}
 
-          {succsess && <p className="text-sm text-green-500">{succsess}</p>}
+          {success && <p className="text-sm text-green-500">{success}</p>}
+
           <button
             type="submit"
             disabled={loading}
-            className="rounded bg-blue-600 px-4 py-2 text-white"
+            className="rounded bg-blue-600 px-4 py-2 text-white disabled:bg-gray-400"
           >
             {loading ? "Loading..." : "Submit Booking"}
           </button>
         </form>
       </div>
     </main>
+  );
+}
+
+export default function CreateBookingPage() {
+  return (
+    <Suspense fallback={<p className="p-6">Loading booking form...</p>}>
+      <CreateBookingContent />
+    </Suspense>
   );
 }
