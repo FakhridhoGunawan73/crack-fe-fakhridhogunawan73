@@ -10,16 +10,18 @@ type Props = {
 
 export default function ProtectedRoute({ children }: Props) {
   const router = useRouter();
-
   const [loading, setLoading] = useState(true);
+  const [authorized, setAuthorized] = useState(false);
 
   useEffect(() => {
     async function checkAuth() {
       try {
         await api.get("/auth/profile");
-        setLoading(false);
+        setAuthorized(true);
       } catch {
-        router.push("/login");
+        router.replace("/login");
+      } finally {
+        setLoading(false);
       }
     }
 
@@ -33,6 +35,8 @@ export default function ProtectedRoute({ children }: Props) {
       </div>
     );
   }
+
+  if (!authorized) return null;
 
   return <>{children}</>;
 }

@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import api from "@/lib/api";
 import { useRouter } from "next/navigation";
+import api from "@/lib/api";
+import { clearAccessTokenCookie } from "@/lib/storage";
 
 export default function ProfilePage() {
+  const router = useRouter();
   const [profile, setProfile] = useState<any>(null);
   const [error, setError] = useState("");
-
-  const router = useRouter();
 
   useEffect(() => {
     async function getProfile() {
@@ -16,15 +16,25 @@ export default function ProfilePage() {
         const response = await api.get("/auth/profile");
         setProfile(response.data);
       } catch (err: any) {
+        if (err.response?.status === 401) {
+          clearAccessTokenCookie();
+          router.replace("/login");
+          return;
+        }
         setError(err.response?.data?.message || "Gagal mengambil profile");
       }
     }
 
     getProfile();
-  }, []);
+  }, [router]);
 
-  function handleLogout() {
-    router.push("/login");
+  async function handleLogout() {
+    try {
+      await api.post("/auth/logout");
+    } finally {
+      clearAccessTokenCookie();
+      router.replace("/login");
+    }
   }
 
   return (

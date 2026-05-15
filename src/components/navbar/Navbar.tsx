@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import api from "@/lib/api";
+import { clearAccessTokenCookie } from "@/lib/storage";
 
 export default function Navbar() {
   const router = useRouter();
@@ -32,6 +33,7 @@ export default function Navbar() {
     try {
       await api.post("/auth/logout");
     } finally {
+      clearAccessTokenCookie();
       setIsLogin(false);
       setRole("");
       window.location.href = "/login";

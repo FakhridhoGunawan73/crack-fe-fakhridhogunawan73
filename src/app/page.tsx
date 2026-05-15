@@ -37,7 +37,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-gray-100">
-      <section className="bg-gradient-to-r from-blue-600 to-blue-800 px-8 py-24 text-white">
+      <section className="bg-linear-to-r from-blue-600 to-blue-800 px-8 py-24 text-white">
         <div className="mx-auto max-w-6xl">
           <div className="max-w-3xl">
             <p className="mb-4 text-sm font-medium uppercase tracking-widest text-blue-200">

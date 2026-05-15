@@ -4,8 +4,13 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/lib/api";
 
+import { syncAccessTokenCookie } from "@/lib/storage";
+import { useSearchParams } from "next/navigation";
+
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const nextPath = searchParams.get("next") || "/";
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -26,7 +31,12 @@ export default function LoginPage() {
       });
       console.log("Login response:", response.data);
 
-      window.location.href = "/";
+      const { accessToken } = response.data;
+      if (accessToken) {
+        syncAccessTokenCookie(accessToken);
+      }
+
+      window.location.href = nextPath;
     } catch (err: any) {
       setError(err.response?.data?.message || "Login gagal");
     } finally {
