@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
+import api from "@/lib/api";
 
 export default function Navbar() {
   const router = useRouter();
@@ -12,19 +13,29 @@ export default function Navbar() {
   const [role, setRole] = useState("");
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const userRole = localStorage.getItem("role");
+    async function checkAuth() {
+      try {
+        const response = await api.get("/auth/profile");
 
-    if (token) {
-      setIsLogin(true);
-      setRole(userRole || "");
+        setIsLogin(true);
+        setRole(response.data.role);
+      } catch {
+        setIsLogin(false);
+        setRole("");
+      }
     }
+
+    checkAuth();
   }, []);
 
-  function handleLogout() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("role");
-    window.location.href = "/login";
+  async function handleLogout() {
+    try {
+      await api.post("/auth/logout");
+    } finally {
+      setIsLogin(false);
+      setRole("");
+      window.location.href = "/login";
+    }
   }
 
   return (

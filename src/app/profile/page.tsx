@@ -20,19 +20,10 @@ export default function ProfilePage() {
       }
     }
 
-    const token = localStorage.getItem("token");
-
-    if (!token) {
-      router.push("/login");
-      return;
-    }
-
     getProfile();
   }, []);
 
   function handleLogout() {
-    localStorage.removeItem("token");
-
     router.push("/login");
   }
 

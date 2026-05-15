@@ -26,9 +26,6 @@ export default function LoginPage() {
       });
       console.log("Login response:", response.data);
 
-      localStorage.setItem("token", response.data.accessToken);
-      localStorage.setItem("role", response.data.user.role);
-
       window.location.href = "/";
     } catch (err: any) {
       setError(err.response?.data?.message || "Login gagal");

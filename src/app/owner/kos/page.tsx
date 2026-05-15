@@ -20,7 +20,8 @@ export default function OwnerKosPage() {
   useEffect(() => {
     async function fetchMyKos() {
       try {
-        const role = localStorage.getItem("role");
+        const profileResponse = await api.get("/auth/profile");
+        const role = profileResponse.data.role;
 
         const response =
           role === "ADMIN"
