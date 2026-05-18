@@ -49,11 +49,14 @@ export async function logout() {
     });
   } catch (error) {
     console.error("Logout failed:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("Logout failed", error);
+    }
   }
 
   clearAuth();
 
-  window.location.href = "/login";
+  window.location.replace("/login");
 }
 
 export async function getCurrentUser(): Promise<AuthUser | null> {
